@@ -197,23 +197,54 @@ var matrix = [
   [1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48]
 ];
 
-function greatestProduct(matrix, adjacent) {
-  var max = 0;
+// function greatestProduct(matrix, adjacent) {
+//   var max = 0;
 
-  var dx = [1, 0, 1,-1];
-  var dy = [0, 1, 1, 1];
+//   var dx = [1, 0, 1,-1];
+//   var dy = [0, 1, 1, 1];
 
-  for (var y = 0; y < matrix.length; y++) {
-    for (var x = 0; x < matrix[y].length; x++) {
-      for (var d = 0; d < 4; d++) {
-        var p = 1;
-        for (var i = 0; i < adjacent; i++) {
-          p*= get(matrix, y + i * dy[d], x + i * dx[d]);
-        }
-        max = Math.max(p, max);
+//   for (var y = 0; y < matrix.length; y++) {
+//     for (var x = 0; x < matrix[y].length; x++) {
+//       for (var d = 0; d < 4; d++) {
+//         var p = 1;
+//         for (var i = 0; i < adjacent; i++) {
+//           p*= get(matrix, y + i * dy[d], x + i * dx[d]);
+//         }
+//         max = Math.max(p, max);
+//       }
+//     }
+//   }
+//   return max;
+// }
+// greatestProduct(matrix, 4);
+
+
+// via 2
+
+function greatestProduct(matrix) {
+  var horizontal, vertical, diagonal;
+  var greatProduct = 0;
+
+  for (var i=0, nRows = matrix.length; i < nRows - 1; i++) {
+    for (var j=0, nCols = matrix[0].length; j < nCols - 1; j++) {
+      // 4 horizontal elements
+      if (j < nCols-3) {
+        horizontal = matrix[i][j] * matrix[i][j+1] * matrix[i][j+2] * matrix[i][j+3];
       }
+
+      // 4 vertical elements
+      if (i < nRows-3) {
+        vertical = matrix[i][j] * matrix[i+1][j] * matrix[i+2][j] * matrix[i+3][j];
+      }
+
+      // 4 Diagonal elements
+      if (i < nRows-3 && j < nCols-3) {
+        diagonal = matrix[i][j] * matrix[i+1][j+1] * matrix[i+2][j+2] * matrix[i+3][j+3];
+      }
+
+      greatProduct = Math.max(greatProduct, horizontal, vertical, diagonal);
     }
   }
-  return max;
+
+  return greatProduct;
 }
-greatestProduct(matrix, 4);
